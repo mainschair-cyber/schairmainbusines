@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>schairmainbusines - Register</title>
+  <style>
+    *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif}
+    body{background:linear-gradient(135deg, #004aad, #00c6ff); height:100vh; display:flex; justify-content:center; align-items:center}
+    .container{background:#fff; padding:40px; border-radius:15px; width:350px; box-shadow:0 8px 25px rgba(0,0,0,0.2); text-align:center}
+    .logo{font-size:28px; font-weight:bold; color:#004aad; margin-bottom:10px}
+    .subtitle{color:#666; margin-bottom:25px; font-size:14px}
+    input{width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; font-size:15px}
+    button{width:100%; padding:12px; background:#004aad; color:white; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; margin-top:10px}
+    button:hover{background:#003080}
+    button:disabled{opacity:0.6; cursor:not-allowed}
+  </style>
+</head>
+<body>
 
+  <div class="container">
+    <div class="logo">schairmainbusines</div>
+    <div class="subtitle">Create Your Account</div>
+    
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+    
+    <button id="registerBtn">Register</button>
+  </div>
+
+  <script type="module">
+    // Firebase SDK Import
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+    // TUMHARA FIREBASE CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyCpCSJphFzYfghLGVR99RbYOVnNQfBhD1s",
+      authDomain: "schairmainbusines.firebaseapp.com",
+      projectId: "schairmainbusines",
+      storageBucket: "schairmainbusines.firebasestorage.app",
+      messagingSenderId: "540015695794",
+      appId: "1:540015695794:web:ef103b21429a76658b76ab"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Register Button Logic
+    const btn = document.getElementById('registerBtn');
+    btn.addEventListener('click', () => {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if(!name || !email || !password){
+        alert("Please fill all fields");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Creating Account...";
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Account Created Successfully!");
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+          btn.disabled = false;
+          btn.innerText = "Register";
+        });
+    });
+  </script>
+
+</body>
+</html>
